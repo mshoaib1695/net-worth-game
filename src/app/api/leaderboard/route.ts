@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import redis from "@/lib/redisClient";
-import verifyToken from "@/utils/verifyJWT";
+import redis from "../../../lib/redisClient";
+import verifyToken from "../../../utils/verifyJWT";
 
 const prisma = new PrismaClient();
 

@@ -1,8 +1,7 @@
 "use client";
 import Image from "next/image";
-import Input from "@/components/shared/Input";
 import { useEffect, useState } from "react";
-import Header from "@/components/shared/Header";
+import Header from "../../../components/shared/Header";
 import { useDynamicContext, useAuthenticateConnectedUser } from "../../../lib/dynamic";
 import { useRouter } from "next/navigation";
 

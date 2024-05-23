@@ -1,8 +1,8 @@
 "use client";
 import { getAuthToken, useDynamicContext } from "../lib/dynamic";
 import { useRouter } from "next/navigation";
-import Navbar from "@/components/shared/Navbar";
-import RankingsTable from "@/components/shared/RankingsTable";
+import Navbar from "../components/shared/Navbar";
+import RankingsTable from "../components/shared/RankingsTable";
 import { useEffect, useState } from "react";
 
 export default function Home() {

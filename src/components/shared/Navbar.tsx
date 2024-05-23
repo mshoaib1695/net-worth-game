@@ -1,4 +1,4 @@
-import { DynamicWidget, useDynamicContext } from "@/lib/dynamic";
+import { DynamicWidget, useDynamicContext } from "../../lib/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 

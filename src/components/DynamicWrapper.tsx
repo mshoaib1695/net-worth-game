@@ -3,7 +3,7 @@
 import {
   DynamicContextProvider,
   EthereumWalletConnectors,
-} from "@/lib/dynamic";
+} from "../lib/dynamic";
 import { getAuthToken } from "@dynamic-labs/sdk-react-core";
 
 export default function ProviderWrapper({ children }: React.PropsWithChildren) {

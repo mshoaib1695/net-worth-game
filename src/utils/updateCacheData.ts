@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import redis from "@/lib/redisClient";
+import redis from "../lib/redisClient";
 
 const prisma = new PrismaClient();
 
