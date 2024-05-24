@@ -20,6 +20,7 @@ export async function GET(req: NextRequest) {
     const cacheKey = `leaderboard`;
     await verifyToken(token);
     const cachedData = await redis.get(cacheKey);
+    console.log("cachedData", cachedData)
     if (cachedData) {
       const response = NextResponse.json({ success: true, data: cachedData });
       response.headers.set("Cache-Control", "no-store");
