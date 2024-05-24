@@ -85,6 +85,39 @@ export const updateCache = async () => {
     total: user.netWorth?.totalValue.toFixed(2),
     rank: index + 1,
   }));
-  console.log("UpdateCacheData", importantData)
-  await redis.set(cacheKey, JSON.stringify(importantData));
+  console.log("UpdateCacheData", importantData);
+  await redis.set(cacheKey, importantData, { ex: 120 });
 };
+
+export async function fetchLeaderboardData() {
+  const order = "desc";
+  const cacheKey = `leaderboard`;
+  const cachedData = await redis.get(cacheKey);
+
+  if (cachedData) {
+    return cachedData;
+  }
+
+  const users = await prisma.user.findMany({
+    include: {
+      netWorth: true,
+    },
+    orderBy: {
+      netWorth: {
+        totalValue: order,
+      },
+    },
+  });
+
+  const importantData = users.map((user, index) => ({
+    walletAddress: user.walletAddress,
+    tokenValue: user.netWorth?.tokenValue,
+    ethValue: user.netWorth?.ethereumValue,
+    multiplier: user.multiplier,
+    total: user.netWorth?.totalValue.toFixed(2),
+    rank: index + 1,
+  }));
+
+  await redis.set(cacheKey, importantData, { ex: 120 });
+  return importantData;
+}

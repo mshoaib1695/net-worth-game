@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-import redis from "../../../lib/redisClient";
 import verifyToken from "../../../utils/verifyJWT";
+import { fetchLeaderboardData } from "../../../services/user";
 
-const prisma = new PrismaClient();
-export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest) {
   const authorization = req.headers.get("authorization");
   if (!authorization?.split(" ")[1]) {
@@ -17,38 +14,10 @@ export async function GET(req: NextRequest) {
   }
   try {
     const token = authorization?.split(" ")[1];
-    const cacheKey = `leaderboard`;
     await verifyToken(token);
-    const cachedData = await redis.get(cacheKey);
-    console.log("cachedData", cachedData)
-    if (cachedData) {
-      const response = NextResponse.json({ success: true, data: cachedData });
-      response.headers.set("Cache-Control", "no-store");
-      return response;
-    }
-
-    const users = await prisma.user.findMany({
-      include: {
-        netWorth: true,
-      },
-      orderBy: {
-        netWorth: {
-          totalValue: "desc",
-        },
-      },
-    });
-
-    const importantData = users.map((user, index) => ({
-      walletAddress: user.walletAddress,
-      tokenValue: user.netWorth?.tokenValue,
-      ethValue: user.netWorth?.ethereumValue,
-      multiplier: user.multiplier,
-      total: user.netWorth?.totalValue.toFixed(2),
-      rank: index + 1,
-    }));
-
-    await redis.set(cacheKey, JSON.stringify(importantData));
-    const response = NextResponse.json({ success: true, data: importantData });
+    const leaderboardData = await fetchLeaderboardData();
+    console.log("leaderboardData: ", leaderboardData)
+    const response = NextResponse.json({ success: true, data: leaderboardData });
     response.headers.set("Cache-Control", "no-store");
     return response;
   } catch (error) {
