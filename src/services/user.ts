@@ -86,7 +86,7 @@ export const updateCache = async () => {
     rank: index + 1,
   }));
   console.log("UpdateCacheData", importantData);
-  await redis.set(cacheKey, importantData, { ex: 120 });
+  await redis.set(cacheKey, JSON.stringify(importantData), { ex: 120 });
 };
 
 export async function fetchLeaderboardData() {
@@ -94,9 +94,9 @@ export async function fetchLeaderboardData() {
   const cacheKey = `leaderboard`;
   const cachedData = await redis.get(cacheKey);
 
-  if (cachedData) {
-    return cachedData;
-  }
+  // if (cachedData) {
+  //   return cachedData;
+  // }
 
   const users = await prisma.user.findMany({
     include: {
