@@ -85,6 +85,6 @@ export const updateCache = async () => {
     total: user.netWorth?.totalValue.toFixed(2),
     rank: index + 1,
   }));
-
+  console.log("UpdateCacheData", importantData)
   await redis.set(cacheKey, JSON.stringify(importantData));
 };
