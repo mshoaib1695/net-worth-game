@@ -14,6 +14,9 @@ const RankingsTable = ({ users }: any) => {
               Token Token
             </th>
             <th scope="col" className="py-3 px-6">
+              Net Worth
+            </th>
+            <th scope="col" className="py-3 px-6">
               Multiplier
             </th>
             <th scope="col" className="py-3 px-6">
@@ -23,7 +26,7 @@ const RankingsTable = ({ users }: any) => {
         </thead>
         <tbody>
           {users?.map((user: any, index: number) => {
-            const { walletAddress, ethValue, tokenValue, multiplier, rank } =
+            const { walletAddress, ethValue, tokenValue, multiplier, rank, total } =
               user;
             return (
               <tr key={index} className="bg-white border-b hover:bg-gray-50">
@@ -34,6 +37,7 @@ const RankingsTable = ({ users }: any) => {
                 </td>
                 <td className="py-4 px-6">{ethValue}</td>
                 <td className="py-4 px-6">{tokenValue}</td>
+                <td className="py-4 px-6">{total}</td>
                 <td className="py-4 px-6">{multiplier}</td>
                 <td className="py-4 px-6">{rank}</td>
               </tr>
