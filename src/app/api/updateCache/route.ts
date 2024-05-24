@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 const updateCache = async () => {
   const order = "desc";
-  const cacheKey = `users:${order}`;
+  const cacheKey = `leaderboard`;
 
   const users = await prisma.user.findMany({
     include: {
