@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import fetchNetWorth from "../../../lib/netWorth";
 import verifyToken from "../../../utils/verifyJWT";
-import { createUser, getUser, updateUser } from "../../../services/user";
+import {
+  createUser,
+  getUser,
+  updateCache,
+  updateUser,
+} from "../../../services/user";
 
 export async function POST(req: NextRequest) {
   try {
@@ -27,6 +32,7 @@ export async function POST(req: NextRequest) {
         },
         data
       );
+      updateCache();
       const response = NextResponse.json({ success: true });
       return response;
     } else {
