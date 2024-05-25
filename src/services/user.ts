@@ -1,7 +1,9 @@
+"use server";
 import { PrismaClient } from "@prisma/client";
+import kv from "../lib/redisClient";
+import { unstable_noStore as noStore } from 'next/cache';
 
 const prisma = new PrismaClient();
-import redis from "../lib/redisClient";
 
 export async function getUser(walletAddress: string) {
   return await prisma.user.findUnique({
@@ -85,18 +87,21 @@ export const updateCache = async () => {
     total: user.netWorth?.totalValue.toFixed(2),
     rank: index + 1,
   }));
+
   console.log("UpdateCacheData", importantData);
-  await redis.set(cacheKey, JSON.stringify(importantData), { ex: 120 });
+  await kv.set(cacheKey, importantData,  { ex: 1200 });
 };
 
 export async function fetchLeaderboardData() {
   const order = "desc";
-  const cacheKey = `leaderboard`;
-  const cachedData = await redis.get(cacheKey);
+  const cacheKey = "leaderboard";
+  noStore()
+  const cachedData = await kv.get(cacheKey);
+  console.log("cachedData", cachedData);
 
-  // if (cachedData) {
-  //   return cachedData;
-  // }
+  if (cachedData) {
+    return cachedData;
+  }
 
   const users = await prisma.user.findMany({
     include: {
@@ -118,6 +123,6 @@ export async function fetchLeaderboardData() {
     rank: index + 1,
   }));
 
-  await redis.set(cacheKey, importantData, { ex: 120 });
+  await kv.set(cacheKey, importantData, { ex: 1200 });
   return importantData;
 }

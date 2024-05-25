@@ -28,6 +28,7 @@ export default function Home() {
       const resp = await fetch("/api/leaderboard", {
         headers: {
           Authorization: `Bearer ${dynamicJwtToken}`,
+          cache: 'no-store'
         },
       });
       const data = await resp.json();

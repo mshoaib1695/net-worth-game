@@ -25,7 +25,7 @@ const RankingsTable = ({ users }: any) => {
           </tr>
         </thead>
         <tbody>
-          {users?.map((user: any, index: number) => {
+          {users.length ? users?.map((user: any, index: number) => {
             const { walletAddress, ethValue, tokenValue, multiplier, rank, total } =
               user;
             return (
@@ -42,7 +42,7 @@ const RankingsTable = ({ users }: any) => {
                 <td className="py-4 px-6">{rank}</td>
               </tr>
             );
-          })}
+          }) : <> </>}
         </tbody>
       </table>
     </div>
